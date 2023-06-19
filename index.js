@@ -33,8 +33,6 @@ class Client {
 
             return parsedData;
         } catch (error) {
-            console.log(error);
-
             return null;
         }
     }
