@@ -1,8 +1,8 @@
 const puppeteer = require('puppeteer');
 
 class Client {
-    constructor({ options }) {
-        if (options.cache.enabled || options.cache.ttl) {
+    constructor(options) {
+        if (options.cache?.enabled || options.cache?.ttl) {
             this.cache = new Map();
         }
 
@@ -39,7 +39,7 @@ class Client {
      * @param {string} url
      */
     validiateCache(url) {
-        if (!this.options.cache) return this.fetch(url);
+        if (!options.cache?.enabled && !options.cache?.ttl) return this.fetch(url);
 
         const data = this.cache.get(url);
 
