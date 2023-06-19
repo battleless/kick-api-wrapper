@@ -4,7 +4,7 @@ class Client {
     constructor({ options }) {
         if (options.cache.enabled || options.cache.ttl) {
             this.cache = new Map();
-        };
+        }
 
         this.options = options;
     }
@@ -32,7 +32,7 @@ class Client {
             return parsedData;
         } catch {
             return null;
-        };
+        }
     }
     /**
      * ✅ Checks the cache for data before fetching it
@@ -48,7 +48,7 @@ class Client {
         if (data.expires <= Date.now()) {
             this.cache.delete(url);
             return this.fetch(url);
-        };
+        }
 
         return Promise.resolve(data.data);
     }
