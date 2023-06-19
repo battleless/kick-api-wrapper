@@ -39,7 +39,7 @@ class Client {
      * @param {string} url
      */
     validiateCache(url) {
-        if (!options.cache?.enabled && !options.cache?.ttl) return this.fetch(url);
+        if (!this.options.cache?.enabled && !this.options.cache?.ttl) return this.fetch(url);
 
         const data = this.cache.get(url);
 
