@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 
 class Client {
-    constructor(options) {
+    constructor(options = {}) {
         if (options.cache?.enabled || options.cache?.ttl) {
             this.cache = new Map();
         }
@@ -24,13 +24,17 @@ class Client {
         try {
             const parsedData = JSON.parse(data.replace(/<\/?[^>]+>/gi, ''));
 
-            this.cache.set(url, {
-                data: parsedData,
-                expires: Date.now() + this.options.cache.ttl
-            });
+            if (this?.options.cache) {
+                this.cache.set(url, {
+                    data: parsedData,
+                    expires: Date.now() + this.options.cache.ttl
+                });
+            }
 
             return parsedData;
-        } catch {
+        } catch (error) {
+            console.log(error);
+
             return null;
         }
     }
