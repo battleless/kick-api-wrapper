@@ -9,6 +9,7 @@ const client = new Client({
     }
 });
 
-client.livestreams(undefined, undefined, 'slots', 1, 10).then(livestreams => {
-    console.log(livestreams);
+client.getChannel('adinross').then(channel => {
+    console.log(channel.slug);
+    // Returns: 904404
 });

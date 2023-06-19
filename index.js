@@ -92,11 +92,11 @@ class Client {
         return this.validiateCache('https://kick.com/api/v1/categories');
     }
     /**
-     * 🪓 Returns data on Kick subcategories | Default: page = 1, limit = 25
+     * 🪓 Returns data on Kick subcategories
      * @param {number} page 
      * @param {number} limit 
      */
-    getSubcategories({ page = 1, limit = 25 }) {
+    getSubcategories(page = 1, limit = 25) {
         return this.validiateCache(`https://kick.com/api/v1/subcategories?page=${page}&limit=${limit}`);
     }
 }
