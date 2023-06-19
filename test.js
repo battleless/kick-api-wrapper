@@ -9,10 +9,6 @@ const client = new Client({
     }
 });
 
-client.search('fortnite').then(results => {
-    console.log(results.categories[0].name);
-});
-
-client.getSubcategories().then(subcategories => {
-    console.log(subcategories);
+client.livestreams(undefined, undefined, 'slots', 1, 10).then(livestreams => {
+    console.log(livestreams);
 });
