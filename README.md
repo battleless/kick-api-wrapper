@@ -4,8 +4,12 @@
 - Built-in caching to avoid unnecessary requests
 - Simplistic codebase - simple to addon to
 
+```
+npm install kick-api-wrapper
+```
+
 ```js
-const Client = require('./index.js');
+const Client = require('kick-api-wrapper');
 
 const client = new Client({
     cache: {
