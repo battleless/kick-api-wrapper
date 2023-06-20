@@ -1,12 +1,15 @@
 {
   "name": "kick-api-wrapper",
   "description": "A simple wrapper for Kick's private API.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "index.js",
   "scripts": {
     "test": "test.js"
   },
   "keywords": [],
   "author": "battleless",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^20.7.2"
+  }
 }

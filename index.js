@@ -1,9 +1,21 @@
 const puppeteer = require('puppeteer');
 
 class Client {
+    /**
+     * 🔨 Creates a new Kick client
+     * @param {object} options
+     * @param {object} options.cache
+     * @param {boolean} options.cache.enabled
+     * @param {number} options.cache.ttl
+     */
     constructor(options = {}) {
-        if (options.cache?.enabled || options.cache?.ttl) {
-            this.cache = new Map();
+        if (options.cache) {
+            if (options.cache?.enabled && options.cache?.ttl) {
+                if (typeof options.cache.enabled !== 'boolean') throw new Error('cache.enabled: expected boolean, received ' + typeof options.cache.enabled);
+                if (typeof options.cache.ttl !== 'number') throw new Error('cache.ttl: expected number, received ' + typeof options.cache.ttl);
+
+                this.cache = new Map();
+            } else throw new Error('cache: expected object with properties "enabled" and "ttl"');
         }
 
         this.options = options;
@@ -11,8 +23,22 @@ class Client {
     /**
      * ✅ Fetches data with a headless browser (puppeteer)
      * @param {string} url
+     * @param {boolean} force
      */
-    async fetch(url) {
+    async fetch(url, force = false) {
+        if (this.options?.cache && !force) {
+            const data = this.cache.get(url);
+
+            if (!data) return this.fetch(url, true);
+
+            if (data.expires <= Date.now()) {
+                this.cache.delete(url);
+                return this.fetch(url, true);
+            }
+
+            return Promise.resolve(data.data);
+        }
+
         const browser = await puppeteer.launch({ headless: 'new' });
         const page = await browser.newPage();
         await page.goto(url);
@@ -24,7 +50,7 @@ class Client {
         try {
             const parsedData = JSON.parse(data.replace(/<\/?[^>]+>/gi, ''));
 
-            if (this?.options.cache) {
+            if (this.options?.cache) {
                 this.cache.set(url, {
                     data: parsedData,
                     expires: Date.now() + this.options.cache.ttl
@@ -37,36 +63,18 @@ class Client {
         }
     }
     /**
-     * ✅ Checks the cache for data before fetching it
-     * @param {string} url
-     */
-    validiateCache(url) {
-        if (!this.options.cache?.enabled && !this.options.cache?.ttl) return this.fetch(url);
-
-        const data = this.cache.get(url);
-
-        if (!data) return this.fetch(url);
-
-        if (data.expires <= Date.now()) {
-            this.cache.delete(url);
-            return this.fetch(url);
-        }
-
-        return Promise.resolve(data.data);
-    }
-    /**
      * 🪓 Returns data on a Kick channel
      * @param {string} channel
      */
     getChannel(channel) {
-        return this.validiateCache(`https://kick.com/api/v1/channels/${channel}`);
+        return this.fetch(`https://kick.com/api/v1/channels/${channel}`);
     }
     /**
      * 🔍 Returns channels and categories which match the searched word
      * @param {string} searched_word
      */
     search(searched_word) {
-        return this.validiateCache(`https://kick.com/api/search?searched_word=${searched_word}`);
+        return this.fetch(`https://kick.com/api/search?searched_word=${searched_word}`);
     }
     /**
      * 🔍 Returns channels live streaming based on parameters
@@ -76,7 +84,7 @@ class Client {
      * @param {string} sort
      */
     getLivestreams(language = 'en', sort = 'desc', page = 1, limit = 25, subcategory = false) {
-        return this.validiateCache(`https://kick.com/stream/livestreams/${language}?page=${page}&limit=${limit}&subcategory=${subcategory}&sort=${sort}`);
+        return this.fetch(`https://kick.com/stream/livestreams/${language}?page=${page}&limit=${limit}&subcategory=${subcategory}&sort=${sort}`);
     }
     /**
      * 🪓 Returns clips based on parameters
@@ -85,13 +93,13 @@ class Client {
      * @param {string} time
      */
     getClips(cursor = 0, sort = 'view', time = 'all') {
-        return this.validiateCache(`https://kick.com/api/v2/clips?cursor=${cursor}&sort=${sort}&time=${time}`);
+        return this.fetch(`https://kick.com/api/v2/clips?cursor=${cursor}&sort=${sort}&time=${time}`);
     }
     /**
      * 🪓 Returns all main categories on Kick
      */
     getCategories() {
-        return this.validiateCache('https://kick.com/api/v1/categories');
+        return this.fetch('https://kick.com/api/v1/categories');
     }
     /**
      * 🪓 Returns data on Kick subcategories
@@ -99,7 +107,7 @@ class Client {
      * @param {number} limit 
      */
     getSubcategories(page = 1, limit = 25) {
-        return this.validiateCache(`https://kick.com/api/v1/subcategories?page=${page}&limit=${limit}`);
+        return this.fetch(`https://kick.com/api/v1/subcategories?page=${page}&limit=${limit}`);
     }
 }
 
