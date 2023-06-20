@@ -1,4 +1,4 @@
-`kick-api` allows you to access Kick's currently private API.
+`kick-api-wrappepr` allows you to access Kick's currently private API.
 
 - Headless browser to avoid Cloudflare block
 - Built-in caching to avoid unnecessary requests
