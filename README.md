@@ -5,19 +5,17 @@
 - Simplistic codebase - simple to addon to
 
 ```js
-const Client = require('./client.js');
+const Client = require('./index.js');
 
 const client = new Client({
-    options: {
-        cache: {
-            enabled: true,
-            ttl: 60000
-        }
+    cache: {
+        enabled: true,
+        ttl: 60000
     }
 });
 
 client.getChannel('adinross').then(channel => {
-    console.log(channel.slug);
+    console.log(channel.user_id);
     // Returns: 904404
 });
 ```
