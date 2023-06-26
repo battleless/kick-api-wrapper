@@ -70,6 +70,20 @@ class Client {
         return this.fetch(`https://kick.com/api/v1/channels/${channel}`);
     }
     /**
+     * 🪓 Returns data on a Kick channels leaderboard
+     * @param {string} channel
+     */
+    getChannelLeaderboard(channel) {
+        return this.fetch(`https://kick.com/api/v2/channels/${channel}/leaderboards`);
+    }
+    /**
+     * 🪓 Returns data on a Kick user
+     * @param {string} user
+     */
+    getUser(user) {
+        return this.fetch(`https://kick.com/api/v1/users/${user}`);
+    }
+    /**
      * 🔍 Returns channels and categories which match the searched word
      * @param {string} searched_word
      */
@@ -95,6 +109,13 @@ class Client {
      */
     getClips({ cursor = 0, sort = 'view', time = 'all' }) {
         return this.fetch(`https://kick.com/api/v2/clips?cursor=${cursor}&sort=${sort}&time=${time}`);
+    }
+    /**
+     * 🪓 Returns data on a clip
+     * @param {number} id
+     */
+    getClip(id) {
+        return this.fetch(`https://kick.com/api/v2/clips/${id}/info`);
     }
     /**
      * 🪓 Returns all main categories on Kick

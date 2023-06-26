@@ -1,7 +1,7 @@
 {
   "name": "kick-api-wrapper",
   "description": "A simple wrapper for Kick's private API.",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "index.js",
   "scripts": {
     "test": "test.js"
