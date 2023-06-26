@@ -79,12 +79,13 @@ class Client {
     /**
      * 🔍 Returns channels live streaming based on parameters
      * @param {string} subcategory
+     * @param {string} category
      * @param {number} page
      * @param {number} limit
      * @param {string} sort
      */
-    getLivestreams(language = 'en', sort = 'desc', page = 1, limit = 25, subcategory = false) {
-        return this.fetch(`https://kick.com/stream/livestreams/${language}?page=${page}&limit=${limit}&subcategory=${subcategory}&sort=${sort}`);
+    getLivestreams({ language = 'en', sort = 'desc', page = 1, limit = 25, subcategory = '', category = '' }) {
+        return this.fetch(`https://kick.com/stream/livestreams/${language}?page=${page}&limit=${limit}&subcategory=${subcategory}&category=${category}&sort=${sort}`);
     }
     /**
      * 🪓 Returns clips based on parameters
@@ -92,7 +93,7 @@ class Client {
      * @param {string} sort
      * @param {string} time
      */
-    getClips(cursor = 0, sort = 'view', time = 'all') {
+    getClips({ cursor = 0, sort = 'view', time = 'all' }) {
         return this.fetch(`https://kick.com/api/v2/clips?cursor=${cursor}&sort=${sort}&time=${time}`);
     }
     /**
@@ -106,7 +107,7 @@ class Client {
      * @param {number} page 
      * @param {number} limit 
      */
-    getSubcategories(page = 1, limit = 25) {
+    getSubcategories({ page = 1, limit = 25 }) {
         return this.fetch(`https://kick.com/api/v1/subcategories?page=${page}&limit=${limit}`);
     }
 }
